@@ -1,6 +1,7 @@
 package apply.application.mail
 
 import apply.application.ApplicationProperties
+import apply.application.MailSendData
 import apply.application.RegisterApplicantRequest
 import apply.application.ResetPasswordRequest
 import apply.domain.applicant.Applicant
@@ -72,5 +73,9 @@ class MailService(
             "${request.name}님, 이메일 인증 메일 발송해 드립니다.",
             templateEngine.process("mail/email-authentication.html", context)
         )
+    }
+
+    @Async
+    fun sendMail(request: MailSendData) {
     }
 }
