@@ -17,6 +17,8 @@ class MailService(
     private val templateEngine: ISpringTemplateEngine,
     private val mailSender: MailSender
 ) {
+    val MAIL_SENDING_UNIT = 50
+
     @Async
     fun sendPasswordResetMail(request: ResetPasswordRequest, newPassword: String) {
         val context = Context().apply {
@@ -76,6 +78,15 @@ class MailService(
     }
 
     @Async
-    fun sendMail(request: MailSendData) {
+    fun sendMails(request: MailSendData) {
+
+        for (i: Int in 0..request.targetMails.size step MAIL_SENDING_UNIT) {
+            val targetMailsPart = request.targetMails.subList(i, i + MAIL_SENDING_UNIT + 1)
+            send(MailSendData(request.subject, request.content, targetMailsPart))
+        }
+    }
+
+    fun send(mailSendData: MailSendData) {
+        // 메일 발송 진행    
     }
 }

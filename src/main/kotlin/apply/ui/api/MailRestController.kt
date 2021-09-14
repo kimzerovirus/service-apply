@@ -14,7 +14,7 @@ class MailRestController(private val mailService: MailService) {
 
     @PostMapping
     fun sendMail(@RequestBody request: MailSendData): ResponseEntity<Unit> {
-        mailService.sendMail(request)
+        mailService.sendMails(request)
         return ResponseEntity.noContent().build()
     }
 }
