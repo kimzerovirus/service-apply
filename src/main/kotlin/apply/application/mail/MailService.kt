@@ -1,7 +1,6 @@
 package apply.application.mail
 
 import apply.application.ApplicationProperties
-import apply.application.MailSendData
 import apply.application.RegisterApplicantRequest
 import apply.application.ResetPasswordRequest
 import apply.domain.applicant.Applicant
@@ -78,15 +77,9 @@ class MailService(
     }
 
     @Async
-    fun sendMails(request: MailSendData) {
-
-        for (i: Int in 0..request.targetMails.size step MAIL_SENDING_UNIT) {
-            val targetMailsPart = request.targetMails.subList(i, i + MAIL_SENDING_UNIT + 1)
-            send(MailSendData(request.subject, request.content, targetMailsPart))
+    fun sendMailsByBCC(request: MailSendData) {
+        for (targetMailsPart in request.targetMails.chunked(MAIL_SENDING_UNIT)) {
+            mailSender.sendBCC(targetMailsPart.toTypedArray(), request.subject, request.content)
         }
-    }
-
-    fun send(mailSendData: MailSendData) {
-        // 메일 발송 진행    
     }
 }
