@@ -6,6 +6,7 @@ import apply.application.ResetPasswordRequest
 import apply.domain.applicant.Applicant
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.util.UriComponentsBuilder
 import org.thymeleaf.context.Context
 import org.thymeleaf.spring5.ISpringTemplateEngine
@@ -76,10 +77,9 @@ class MailService(
         )
     }
 
-    @Async
-    fun sendMailsByBCC(request: MailSendData) {
+    fun sendMailsByBCC(request: MailSendData, files: Array<MultipartFile>) {
         for (targetMailsPart in request.targetMails.chunked(MAIL_SENDING_UNIT)) {
-            mailSender.sendBCC(targetMailsPart.toTypedArray(), request.subject, request.content)
+            mailSender.sendBCC(targetMailsPart.toTypedArray(), request.subject, request.content, files)
         }
     }
 }
