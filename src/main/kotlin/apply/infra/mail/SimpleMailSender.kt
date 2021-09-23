@@ -1,13 +1,11 @@
 package apply.infra.mail
 
 import apply.application.mail.MailSender
-import org.apache.commons.io.IOUtils
 import org.springframework.boot.autoconfigure.mail.MailProperties
 import org.springframework.core.io.ByteArrayResource
 import org.springframework.mail.javamail.JavaMailSender
 import org.springframework.mail.javamail.MimeMessageHelper
 import org.springframework.stereotype.Component
-import org.springframework.web.multipart.MultipartFile
 
 @Component
 class SimpleMailSender(
@@ -29,7 +27,7 @@ class SimpleMailSender(
         toAddresses: Array<String>,
         subject: String,
         body: String,
-        files: Array<MultipartFile>
+        files: List<Pair<String, ByteArrayResource>>
     ) {
         val message = mailSender.createMimeMessage()
         val mimeMessageHelper = MimeMessageHelper(message, true).apply {
@@ -38,11 +36,8 @@ class SimpleMailSender(
             setSubject(subject)
             setText(body, true)
         }
-        for (multiPartFile in files) {
-            mimeMessageHelper.addAttachment(
-                multiPartFile.originalFilename!!,
-                ByteArrayResource(IOUtils.toByteArray(multiPartFile.inputStream))
-            )
+        files.forEach { (fileName, data) ->
+            mimeMessageHelper.addAttachment(fileName, data)
         }
         mailSender.send(message)
     }

@@ -7,7 +7,6 @@ data class MailSendData(
     val subject: String,
     @field:NotNull
     val content: String,
-    // TODO: file upload type?
     @field:NotNull
     val targetMails: List<String>
 )

@@ -4,9 +4,10 @@ import apply.application.ApplicationProperties
 import apply.application.RegisterApplicantRequest
 import apply.application.ResetPasswordRequest
 import apply.domain.applicant.Applicant
+import apply.infra.mail.SimpleMailSender
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Service
-import org.springframework.web.multipart.MultipartFile
 import org.springframework.web.util.UriComponentsBuilder
 import org.thymeleaf.context.Context
 import org.thymeleaf.spring5.ISpringTemplateEngine
@@ -15,7 +16,7 @@ import org.thymeleaf.spring5.ISpringTemplateEngine
 class MailService(
     private val applicationProperties: ApplicationProperties,
     private val templateEngine: ISpringTemplateEngine,
-    private val mailSender: MailSender
+    private val mailSender: SimpleMailSender
 ) {
     val MAIL_SENDING_UNIT = 50
 
@@ -77,7 +78,8 @@ class MailService(
         )
     }
 
-    fun sendMailsByBCC(request: MailSendData, files: Array<MultipartFile>) {
+    @Async
+    fun sendMailsByBCC(request: MailSendData, files: List<Pair<String, ByteArrayResource>>) {
         for (targetMailsPart in request.targetMails.chunked(MAIL_SENDING_UNIT)) {
             mailSender.sendBCC(targetMailsPart.toTypedArray(), request.subject, request.content, files)
         }

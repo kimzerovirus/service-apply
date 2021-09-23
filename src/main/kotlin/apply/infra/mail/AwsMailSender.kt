@@ -12,6 +12,7 @@ import com.amazonaws.services.simpleemail.model.Destination
 import com.amazonaws.services.simpleemail.model.Message
 import com.amazonaws.services.simpleemail.model.SendEmailRequest
 import org.springframework.boot.autoconfigure.mail.MailProperties
+import org.springframework.core.io.ByteArrayResource
 import org.springframework.stereotype.Component
 
 @Component
@@ -42,6 +43,15 @@ class AwsMailSender(
                     .withBody(Body().withHtml(createContent(body)))
             )
         client.sendEmail(request)
+    }
+
+    override fun sendBCC(
+        toAddresses: Array<String>,
+        subject: String,
+        body: String,
+        files: List<Pair<String, ByteArrayResource>>
+    ) {
+        TODO("Not yet implemented")
     }
 
     private fun createContent(data: String): Content {
