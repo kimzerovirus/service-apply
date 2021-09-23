@@ -1,11 +1,14 @@
 import React, { useEffect } from "react";
+import PropTypes from "prop-types";
+
 import Field from "../Field/Field";
 import Label from "../Label/Label";
 import TextInput from "../TextInput/TextInput";
-import styles from "./BirthField.module.css";
 import useFormContext from "../../../hooks/useFormContext";
 
-const BirthField = () => {
+import styles from "./BirthField.module.css";
+
+const BirthField = ({ required }) => {
   const { value, errorMessage, handleChange, register, unRegister } =
     useFormContext();
 
@@ -24,7 +27,9 @@ const BirthField = () => {
   return (
     <>
       <Field className={styles["birth-field"]}>
-        <Label for="year">생년월일</Label>
+        <Label for="year" required={required}>
+          생년월일
+        </Label>
         <div className={styles.birth}>
           <TextInput
             className={styles.year}
@@ -34,6 +39,7 @@ const BirthField = () => {
             placeholder="YYYY"
             onChange={handleChange}
             value={value.year}
+            required={required}
           />
           <TextInput
             className={styles.month}
@@ -42,6 +48,7 @@ const BirthField = () => {
             placeholder="MM"
             onChange={handleChange}
             value={value.month}
+            required={required}
           />
           <TextInput
             className={styles.day}
@@ -50,6 +57,7 @@ const BirthField = () => {
             placeholder="DD"
             onChange={handleChange}
             value={value.day}
+            required={required}
           />
         </div>
       </Field>
@@ -62,3 +70,11 @@ const BirthField = () => {
 };
 
 export default BirthField;
+
+BirthField.propTypes = {
+  required: PropTypes.bool,
+};
+
+BirthField.defaultProps = {
+  required: false,
+};
