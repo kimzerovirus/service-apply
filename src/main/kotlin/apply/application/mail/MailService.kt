@@ -79,7 +79,7 @@ class MailService(
     }
 
     @Async
-    fun sendMailsByBCC(request: MailSendData, files: List<Pair<String, ByteArrayResource>>) {
+    fun sendMailsByBCC(request: MailSendData, files: Map<String, ByteArrayResource>) {
         for (targetMailsPart in request.targetMails.chunked(MAIL_SENDING_UNIT)) {
             mailSender.sendBCC(targetMailsPart.toTypedArray(), request.subject, request.content, files)
         }

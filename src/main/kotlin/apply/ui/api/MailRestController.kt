@@ -22,7 +22,7 @@ class MailRestController(
         @RequestPart(value = "files") files: Array<MultipartFile>,
     ): ResponseEntity<Unit> {
         val inputStreamFiles =
-            files.map { Pair(it.originalFilename!!, ByteArrayResource(IOUtils.toByteArray(it.inputStream))) }
+            files.associate { (it.originalFilename!! to ByteArrayResource(IOUtils.toByteArray(it.inputStream))) }
         mailService.sendMailsByBCC(request, inputStreamFiles)
         return ResponseEntity.noContent().build()
     }

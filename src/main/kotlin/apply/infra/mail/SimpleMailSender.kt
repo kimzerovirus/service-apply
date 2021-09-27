@@ -27,7 +27,7 @@ class SimpleMailSender(
         toAddresses: Array<String>,
         subject: String,
         body: String,
-        files: List<Pair<String, ByteArrayResource>>
+        files: Map<String, ByteArrayResource>
     ) {
         val message = mailSender.createMimeMessage()
         val mimeMessageHelper = MimeMessageHelper(message, true).apply {

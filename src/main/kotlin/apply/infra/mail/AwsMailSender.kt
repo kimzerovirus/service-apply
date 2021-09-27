@@ -49,7 +49,7 @@ class AwsMailSender(
         toAddresses: Array<String>,
         subject: String,
         body: String,
-        files: List<Pair<String, ByteArrayResource>>
+        files: Map<String, ByteArrayResource>
     ) {
         TODO("Not yet implemented")
     }
