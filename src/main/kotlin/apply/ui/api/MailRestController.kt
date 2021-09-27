@@ -18,8 +18,8 @@ class MailRestController(
 ) {
     @PostMapping
     fun sendMail(
-        @RequestPart(value = "request") request: MailSendData,
-        @RequestPart(value = "files") files: Array<MultipartFile>,
+        @RequestPart request: MailSendData,
+        @RequestPart files: Array<MultipartFile>,
     ): ResponseEntity<Unit> {
         val inputStreamFiles =
             files.associate { (it.originalFilename!! to ByteArrayResource(IOUtils.toByteArray(it.inputStream))) }
