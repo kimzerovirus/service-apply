@@ -127,7 +127,7 @@ const ApplicantRegister = () => {
             <div>
               <InputField
                 name="phoneNumber"
-                type="text"
+                type="tel"
                 label="전화번호"
                 placeholder="연락 가능한 전화번호를 입력해 주세요."
                 required
